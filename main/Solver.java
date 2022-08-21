@@ -1,16 +1,27 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Solver {
     private int iterator;
     private Piece[] queens;
     private boolean solved = false;
     private boolean fullySolved = false;
+    private File file;
 
-
-    Solver(Piece[] queensIn, int length){
+    Solver(Piece[] queensIn, int length) throws IOException{
         this.iterator = 1;
         this.queens = new Piece[length];
         for (int i = 0; i < queens.length; i++) {
             this.queens[i] = queensIn[i];
-        }        
+        }
+        this.file = new File("result.txt");
+        if (!this.file.createNewFile()) {
+            this.file.delete();
+            if (this.file.createNewFile()) {
+                //just to create a new file
+            }
+        }
     }
     
     public boolean checkFullySolved(){
@@ -65,7 +76,7 @@ public class Solver {
         return true;
     }
 
-    public void solve () {
+    public void solve () throws IOException {
         while (!this.fullySolved) {
             while (!solved) {
                 if (this.checkCanStayHere()) {
@@ -80,8 +91,11 @@ public class Solver {
                     }
                 }
             }
-            System.out.println(this.queens[0].world);
+
+            FileWriter fileWriter = new FileWriter(this.file, true);
+            fileWriter.write(this.queens[0].world.toString() + "\n");
             this.fullySolved = checkFullySolved();
+            fileWriter.close();
         }
     }
 
