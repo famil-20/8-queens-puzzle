@@ -1,2 +1,2 @@
 # 8-queens-puzzle
-The program for solving famous Eight queens puzzle
+Program that finds all the solutions to the well-known Eight Queens Puzzle
