@@ -4,21 +4,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
         int size;
+        String fileName;
+        String in;
+        String[] splitted;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("~~~~~~~~~Queen problem~~~~~~~~~");
-        System.out.print("\n\n");
-        System.out.print("Enter the size of the Board: ");
-        size = scanner.nextInt();
+        in = scanner.nextLine();
+        splitted = in.split(" ");
+        size = Integer.parseInt(splitted[0]);
+        fileName = splitted[1];
         scanner.close();
-        System.out.print("\n\n");
-        System.out.println("Processing...");
-
         Queen[] queens = new Queen[size];
         Board x = new Board(size);
         for (int i = 0; i < queens.length; i++) {
             queens[i] = new Queen("Queen", x, i, 0);
         }
-        Solver a = new Solver(queens, queens.length);
+        Solver a = new Solver(queens, queens.length, fileName);
         a.solve();
     }
 }

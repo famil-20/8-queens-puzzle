@@ -8,14 +8,15 @@ public class Solver {
     private boolean solved = false;
     private boolean fullySolved = false;
     private File file;
+    int counter = 0;
 
-    Solver(Piece[] queensIn, int length) throws IOException{
+    Solver(Piece[] queensIn, int length, String fileName) throws IOException{
         this.iterator = 1;
         this.queens = new Piece[length];
         for (int i = 0; i < queens.length; i++) {
             this.queens[i] = queensIn[i];
         }
-        this.file = new File("result.txt");
+        this.file = new File(fileName);
         if (!this.file.createNewFile()) {
             this.file.delete();
             if (this.file.createNewFile()) {
@@ -77,6 +78,7 @@ public class Solver {
     }
 
     public void solve () throws IOException {
+        FileWriter fileWriter = new FileWriter(this.file, true);
         while (!this.fullySolved) {
             while (!solved) {
                 if (this.checkCanStayHere()) {
@@ -85,6 +87,10 @@ public class Solver {
                 else{
                     if (this.queens[iterator].getPosition().col+1 == this.queens[iterator].world.getSize()) {
                         notFoundGoDown();
+                        if(this.fullySolved)
+                        {
+                            break;
+                        }
                     }
                     else {
                         this.queens[iterator].moveTo(iterator, this.queens[iterator].getPosition().col+1);
@@ -92,20 +98,26 @@ public class Solver {
                 }
             }
 
-            FileWriter fileWriter = new FileWriter(this.file, true);
             fileWriter.write(this.queens[0].world.toString() + "\n");
+            counter += 1;
+            if (this.fullySolved)
+            {
+                break;
+            }
             this.fullySolved = checkFullySolved();
-            fileWriter.close();
         }
+        System.out.println(counter);
+        fileWriter.close();
     }
 
     public void solveRoot () {
         if (this.queens[0].getPosition().col+2 != this.queens[0].world.getSize()) {
             this.queens[0].moveTo(0, this.queens[0].getPosition().col+1);
+            this.iterator = 0;
         }
         else {
-            System.out.println("These were all the solutions!");
-            System.exit(0);
+            // System.exit(0);
+            this.fullySolved = true;
         }
     }
 }
