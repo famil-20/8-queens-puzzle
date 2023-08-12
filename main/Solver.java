@@ -8,7 +8,6 @@ public class Solver {
     private boolean solved = false;
     private boolean fullySolved = false;
     private File file;
-    int counter = 0;
 
     Solver(Piece[] queensIn, int length, String fileName) throws IOException{
         this.iterator = 1;
@@ -99,14 +98,12 @@ public class Solver {
             }
 
             fileWriter.write(this.queens[0].world.toString() + "\n");
-            counter += 1;
             if (this.fullySolved)
             {
                 break;
             }
             this.fullySolved = checkFullySolved();
         }
-        System.out.println(counter);
         fileWriter.close();
     }
 
